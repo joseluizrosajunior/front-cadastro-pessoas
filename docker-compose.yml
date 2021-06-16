@@ -1,0 +1,21 @@
+version: '3'
+services:
+    backend:
+        image: juniorjoseluizrosa/apicadpessoas
+        ports:
+            - "8080:8080"
+        networks:
+            - minha-rede
+        container_name: backend
+    front:
+        image: juniorjoseluizrosa/frontcadpessoas
+        ports:
+            - "80:80"
+        networks:
+            - minha-rede
+        depends_on:
+            - "backend"
+        container_name: frontend
+networks:
+    minha-rede:
+        driver: bridge

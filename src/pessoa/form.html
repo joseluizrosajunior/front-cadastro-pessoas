@@ -26,7 +26,7 @@
         <div class="form-group col-md-1">
             <label>Naturalidade</label>
             <select ng-options="item for item in vm.estados"
-                ng-model="vm.naturalidadeUf" class="form-control" ng-change="vm.loadMunicipios()">
+                ng-model="vm.pessoa.naturalidade.uf" class="form-control">
                 <option value="">Escolha um estado</option>
             </select>
 

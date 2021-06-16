@@ -6,19 +6,27 @@ function PessoaListController (pessoaService) {
     var vm = this;
     vm.pessoa = [];
 
-    function _load() {
+    vm.filtrar = findAll;
+    vm.limpar = limpar;
+    vm.anterior = anterior;
+    vm.proxima = proxima;
+    vm.setPage = setPage;
+    vm.remove = remove;
+
+    findAll();
+
+    function findAll() {
         pessoaService.findAll(vm.page, vm.filter)
-            .then(function(data) {
+            .then((data) => {
                 vm.pessoa = data.content;
                 vm.pageSize = data.numberOfElements;
                 vm.page = data.number + 1;
                 vm.finish = data.last;
-                vm.pages = _pages(data.totalPages);
+                vm.pages = getArrayPages(data.totalPages);
             });
     }
-    _load();
 
-    function _pages(pages) {
+    function getArrayPages(pages) {
         var pagesArr = [];
         for (var i = 1; i <= pages; i++) {
             pagesArr.push(i);
@@ -26,37 +34,35 @@ function PessoaListController (pessoaService) {
         return pagesArr;
     }
 
-    
-    vm.filtrar = _load;
-    vm.limpar = function() {
+    function limpar() {
         vm.filter = '';
-        _load();
+        findAll();
     }
     
-    vm.anterior = function () {
+    function anterior() {
         vm.page--;
-        _load();
+        findAll();
     }
 
-    vm.proxima = function () {
+    function proxima() {
         vm.page++;
-        _load();
+        findAll();
     }
 
-    vm.setPage = function (page) {
+    function setPage(page) {
         vm.page = page;
-        _load();
+        findAll();
     }
     
-    vm.remove = function (id) {
+    function remove(id) {
         if (confirm('Deseja realmente excluir o pessoa?')) {
             pessoaService.remove(id)
-                .then(function () {
-                    alert('pessoa excluído com sucesso!');
-                    _load();
+                .then(() => {
+                    alert('Pessoa excluída com sucesso!');
+                    findAll();
                 })
-                .catch(function (error) {
-                    alert('Problemas ao excluir o pessoa [' + error + ']!');
+                .catch(() => {
+                    alert('Problemas ao excluir o pessoa!');
                 });
 
         }

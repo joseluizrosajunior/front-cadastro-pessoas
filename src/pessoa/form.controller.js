@@ -10,7 +10,7 @@ function PessoaFormController ($scope, pessoaService, $state, $stateParams) {
     vm.titulo = 'Novo pessoa';
     vm.pessoa = {};
 
-    $scope.$watch('vm.naturalidadeUf', loadMunicipios);
+    $scope.$watch('vm.pessoa.naturalidade.uf', loadMunicipios);
 
     init();
 
@@ -33,12 +33,13 @@ function PessoaFormController ($scope, pessoaService, $state, $stateParams) {
         findAllNacionalidade();
     }    
 
-    function loadMunicipios(value) {
-        if (value) {
-            pessoaService.findAllNaturalidade(vm.naturalidadeUf).then((response) => {
-                vm.municipios = response.data;
-            });
+    function loadMunicipios(newValue, oldValue) {
+        if (newValue === oldValue) {
+            return;
         }
+        pessoaService.findAllNaturalidade(vm.naturalidadeUf).then((response) => {
+            vm.municipios = response.data;
+        });
     }
 
     function findAllNacionalidade() {
@@ -53,7 +54,7 @@ function PessoaFormController ($scope, pessoaService, $state, $stateParams) {
                 .then(() => {
                     $state.go('pessoa');
                 })
-                .catch(function() {
+                .catch(() => {
                     alert('Erro ao salvar')
                 });
         } else {
@@ -62,12 +63,16 @@ function PessoaFormController ($scope, pessoaService, $state, $stateParams) {
                     $state.go('pessoa');
                 })
                 .catch((error) => {
-                    alert('Erro ao salvar pessoa: ' + error.data.map((erro) => {
-                        return erro.erro;
-                    }).join(', '));
+                    alert('Erro ao salvar pessoa: ' + mapListErrors(error).join(', '));
                 });
         }
     };
+
+    function mapListErrors(error) {
+        return error.data.map((erro) => {
+            return erro.erro;
+        });
+    }
 
 }
 

@@ -33,7 +33,7 @@
         </div>
         <div class="form-group col-md-5">
             <label>-</label>
-            <select ng-disabled="!vm.naturalidadeUf || !vm.municipios.length" ng-options="item as (item.nome+' - '+item.uf) for item in vm.municipios track by item.id"
+            <select ng-disabled="!vm.pessoa.naturalidade.uf || !vm.municipios.length" ng-options="item as (item.nome+' - '+item.uf) for item in vm.municipios track by item.id"
                 ng-model="vm.pessoa.naturalidade" class="form-control">
                 <option value="">Escolha uma naturalidade</option>
             </select>

@@ -34,10 +34,10 @@ function PessoaFormController ($scope, pessoaService, $state, $stateParams) {
     }    
 
     function loadMunicipios(newValue, oldValue) {
-        if (newValue === oldValue) {
+        if (!newValues || newValue === oldValue) {
             return;
         }
-        pessoaService.findAllNaturalidade(vm.naturalidadeUf).then((response) => {
+        pessoaService.findAllNaturalidade(newValue).then((response) => {
             vm.municipios = response.data;
         });
     }
